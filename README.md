@@ -12,7 +12,32 @@ This AWS CDK project deploys an infrastructure stack that includes:
 -   **S3 Event Notifications**: Configured to send object creation events to SNS.
 
 -   **SQS Subscription to SNS**: Ensures that SQS receives S3 notifications via SNS.
-
+```
+              +-------------------------+
+              |    Gen3 Data Upload      |
+              |    (S3 Bucket)           |
+              +-----------+-------------+
+                          |
+                          | (Event Notification: Object Created)
+                          v
+              +-------------------------+
+              |    Amazon SNS Topic      |
+              +-----------+-------------+
+                          |
+                          | (SNS Subscription)
+                          v
+              +-------------------------+
+              |    Amazon SQS Queue      |
+              |    (ssjDispatcher)       |
+              +-------------------------+
+                          |
+                          | (Message Processing)
+                          v
+              +-------------------------+
+              |    Gen3 Processing      |
+              |  (Runs in EKS)          |
+              +-------------------------+
+```
 Prerequisites
 ----------------
 
